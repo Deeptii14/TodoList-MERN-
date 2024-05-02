@@ -39,25 +39,25 @@
 
 // }
 
-const User = require('../../models/user');
-const Todos = require('../../models/todo');
+import User from '../../models/user.js';
+import Todos from '../../models/todo.js';
 
-exports.addTodo = async (req, res) => {
+const addTodo = async (req, res) => {
   try {
     const userId = req.user.id;
     const { title, description, status } = req.body;
-   
-    if(!title || !description){
-        console.log("Enter details carefully!!");
-        return  res.status(422).json({
-             success:false,
-             message:"Enter details carefully!"
-         })
-      }
+
+    if (!title || !description) {
+      console.log("Enter details carefully!!");
+      return res.status(422).json({
+        success: false,
+        message: "Enter details carefully!"
+      });
+    }
 
     const newTodo = await Todos.create({ title, description, status });
 
-    const updateUser = await User.findByIdAndUpdate(
+    const updateUser = await User.findByIdAndUpdate( // declared but not used
       { _id: userId },
       {
         $push: { todos: newTodo._id },
@@ -81,3 +81,5 @@ exports.addTodo = async (req, res) => {
     });
   }
 }
+
+export default addTodo;
