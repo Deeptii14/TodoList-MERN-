@@ -1,26 +1,22 @@
-const express = require("express");
+import express from "express";
+import { auth } from "../middleware/Auth.js";
+import { addTodo } from "../controllers/todo/createTodos.js";
+import { getAllTodos } from "../controllers/todo/getTodos.js";
+import { deleteTodo } from "../controllers/todo/deleteTodos.js";
+import { updateTodo } from "../controllers/todo/updateTodos.js";
+import { login } from "../controllers/user/login.js";
+import { signup } from "../controllers/user/signup.js";
+
 const router = express.Router();
-const {auth}= require("../middleware/Auth")
-const { addTodo}=require("../controllers/todo/createTodos")
-const {getAllTodos}=require("../controllers/todo/getTodos");
-const{deleteTodo} =require("../controllers/todo/deleteTodos");
-const{updateTodo} =require("../controllers/todo/updateTodos");
-const {  
-    login,
-  } = require("../controllers/user/login");
-  const {
-    signup,
-  } = require("../controllers/user/signup");
 
-
-//user login signup
+// User login and signup routes
 router.post("/signup", signup);
 router.post("/login", login);
 
-//todo routes
-router.get("/getTodos",auth,getAllTodos);
-router.post("/addTodo",auth,addTodo);
-router.patch("/updateTodo/:id",auth,updateTodo);
-router.delete("/deleteTodo/:id",auth,deleteTodo)
+// Todo routes
+router.get("/getTodos", auth, getAllTodos);
+router.post("/addTodo", auth, addTodo);
+router.patch("/updateTodo/:id", auth, updateTodo);
+router.delete("/deleteTodo/:id", auth, deleteTodo);
 
-module.exports = router;
+export default router;
