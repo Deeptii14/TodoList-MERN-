@@ -1,9 +1,11 @@
-const User = require("../../models/user");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import User from "../../models/user.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-// login function
-exports.login = async (req, res) => {
+dotenv.config();
+
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -22,7 +24,6 @@ exports.login = async (req, res) => {
     if (await bcrypt.compare(password, user.password)) {
       const payload = {
         email: user.email,
-        password: user.password,
         id: user._id,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -54,4 +55,3 @@ exports.login = async (req, res) => {
     });
   }
 };
-  
